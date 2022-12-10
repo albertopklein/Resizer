@@ -33,7 +33,7 @@ void get_Files(const char* dirname, vector <string> &fileslist) { //open directo
     //cout << indexed << endl; // test how many files were indexed/sorted
     closedir(dir);
 }
-
+/* 
 void fileread(string filename){ //abre arqiuivo, verifica se ok, e chama função find subckt
     //
 }
@@ -54,7 +54,7 @@ void new_w(){ //abre o arquivo novamente, chama find subckt( neste caso para dar
 }
 
 void simprep(){ // recebe nome do arquivo a ser simulado e coloca num arquivo.bat com a sintaxe pronta para simular.
-}
+} */
 
 int main() {
     vector <string> fileslist;
