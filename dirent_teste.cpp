@@ -20,7 +20,7 @@ int main() {
         perror ("opendir");
         return EXIT_FAILURE;
     }
-    for (size_t i = 0; i < sizeof(files); i++)
+    for (size_t i = 0; i < files.size(); i++)
     {
         cout << files.at(i) << endl;
     }
