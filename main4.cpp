@@ -29,7 +29,7 @@ void get_Files(const char* dirname, vector <string> &fileslist) { //open directo
         }
         entity = readdir(dir);    
     }
-    //for(int i = 0; i < indexed; i++) cout << fileslist[i] << endl; // print filename
+    for(int i = 0; i < indexed; i++) cout << fileslist[i] << endl; // print filename
     //cout << indexed << endl; // test how many files were indexed/sorted
     closedir(dir);
 }
