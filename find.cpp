@@ -101,8 +101,7 @@ int main(void) {
     myfile.close();
     }
     else 
-    cout << "Unable to open file"; 
-    
+        cout << "Unable to open file"; 
     
     vector <string> auxx;
     printvec(names);
