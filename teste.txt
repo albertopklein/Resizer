@@ -1,11 +1,15 @@
-string aux = "";
-    string aux2 = "";
-    size_t n = 4;
-    for(int i = 0; i <= fileslist.size(); i++) {
-        //aux << i;
-        cout << setfill('0') << setw(n) << i;
-        //aux2 << setw(n) << setfill('0') << aux; 
-        //string s = aux2.str();
-        //if(fileslist[i].find('f'+aux))
-        cout << fileslist[i] << endl;
-    }
+mp1 out a pu_n1 vdd pch l='length' W='param1 * log_efwp'
+
+mp2 pu_n1 b pu_n3 vdd pch l='length' W='param2 * log_efwp'
+
+mp3 pu_n3 1 pu_n4 vdd pch l='length' W='param3 * log_efwp'
+
+mp4 pu_n4 c vdd vdd pch l='length' W='param4 * log_efwp'
+
+MN5 out a GND GND nch L='length' W='1 * log_efWn'
+
+MN6 out b GND GND nch L='lengt_' W='1 * log_efWn'
+
+MN7 out d GND GND nch L='length' W='1 * log_efWn'
+
+MN8 out c GND GND nch L='length' W='1 * log_efWn'

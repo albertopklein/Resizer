@@ -8,6 +8,7 @@
 #include <fstream>
 #include <filesystem>
 #include <stdlib.h>
+
 using namespace std;
 
 // A directed graph using
@@ -150,39 +151,39 @@ void get_subckt(string mn_mp ,string filename, vector <string> &names, vector <s
     myfile.open(filename);
     if (myfile.is_open()){
     
-    while (!myfile.eof()){
-        
-        getline(myfile, aux, '\n');
-        size_t result = aux.find(mn_mp);
-        
-        if (result != string::npos){
- 
-            stringstream streamData(aux);
-            getline(streamData, name, ' ');
-            names.push_back(name);
-            //cout << name << endl;
-            getline(streamData, orig, ' ');
-            origs.push_back(orig);
-            //cout << orig << endl;
-            getline(streamData, var, ' ');
-            vars.push_back(var);
-            //cout << var << endl;
-            getline(streamData, dest, ' ');
-            dests.push_back(dest);
-            //cout << dest << endl;
-            getline(streamData, w_str, 'm');
-            char w_ch = streamData.get();
-            //cout << w_ch << endl;
-            if((int)w_ch < 48 && (int)w_ch > 57){ //isdigit(ch)
-                cout << "Erro!! Não é número na leitura do W" << endl;
+        while (!myfile.eof()){
+            
+            getline(myfile, aux, '\n');
+            size_t result = aux.find(mn_mp);
+            
+            if (result != string::npos){
+    
+                stringstream streamData(aux);
+                getline(streamData, name, ' ');
+                names.push_back(name);
+                //cout << name << endl;
+                getline(streamData, orig, ' ');
+                origs.push_back(orig);
+                //cout << orig << endl;
+                getline(streamData, var, ' ');
+                vars.push_back(var);
+                //cout << var << endl;
+                getline(streamData, dest, ' ');
+                dests.push_back(dest);
+                //cout << dest << endl;
+                getline(streamData, w_str, 'm');
+                char w_ch = streamData.get();
+                //cout << w_ch << endl;
+                if((int)w_ch < 48 && (int)w_ch > 57){ //isdigit(ch)
+                    cout << "Erro!! Não é número na leitura do W" << endl;
+                }
+                w_i = w_ch - '0';
+                w.push_back(w_i);
+                //cout << "Name: " << name << " Origem: " << orig << " Var: " << var << " Dest: " << dest << " W= " << w_i << endl;
+                //cout << name << " " << orig << " " << var << " " << dest << " " << w_i << endl;
             }
-            w_i = w_ch - '0';
-            w.push_back(w_i);
-            //cout << "Name: " << name << " Origem: " << orig << " Var: " << var << " Dest: " << dest << " W= " << w_i << endl;
-            //cout << name << " " << orig << " " << var << " " << dest << " " << w_i << endl;
         }
-    }
-    myfile.close();
+        myfile.close();
     }
     else 
         cout << "Unable to open file"; 
@@ -278,7 +279,7 @@ void setpath_for_calc(list<vector<int> > &pathlist, list<vector<int> > &path, ve
     }
 }
 
-void path_strenght_calc(list<vector<int> > &path, vector <int> w){
+void path_strenght_calc(list<vector<int> > &path, vector <int> w, vector <int> &alt){
     for (list<vector<int>>::iterator it1 = path.begin(); it1 != path.end(); ++it1)
     {
         vector<int>::iterator it2;
@@ -295,8 +296,70 @@ void path_strenght_calc(list<vector<int> > &path, vector <int> w){
         float path_strength = (float) widths / path_size;
         std::cout << std::fixed;
         cout << path_strength << endl;
-        //if()
+        if(path_strength > path_size){
+            cout << "Candidato para alteracao" << endl;
+            cout << (*it1).front() << endl;
+            alt.push_back((*it1).front());
+        }
+        cout << endl;
     }
+}
+
+string filecpy(string filename){
+    ifstream f1;
+    ofstream f2;
+    string line;
+    string newfilename = filename;
+    newfilename.pop_back();
+    newfilename.pop_back();
+    newfilename.pop_back();
+    newfilename += "_size.sp";
+    f1.open(filename);
+    f2.open(newfilename);
+    while(!f1.eof()){
+        getline(f1,line);
+        f2 << line << endl;
+    }
+    f1.close();
+    f2.close();
+    return newfilename;
+}
+
+void set_subckt(string filename, vector <int> alt, vector <string> names, vector <int> w){
+    string aux;
+    fstream myfile;
+    vector <string> alt_name;
+    myfile.open(filename);
+    for (int i = 0; i < alt.size(); i++)
+    {
+        string temp = names[alt[i]];
+        if(findinvec(temp, alt_name) == 1) 
+            alt_name.push_back(temp);
+    }
+    printvec(alt_name);
+     
+    if (myfile.is_open()){
+    
+        while (!myfile.eof()){
+            
+            getline(myfile, aux, '\n');
+            size_t result = aux.find(alt_name[0]);
+            
+            if (result != string::npos){
+                string aux2;
+                stringstream streamData(aux);
+                getline(streamData, aux2, 'W');
+                cout << aux2 << endl;
+                //getline(streamData, )
+                cout << result << endl;
+                break;
+            }
+            
+        }
+        myfile.close();
+    }
+    else 
+        cout << "Unable to open file"; 
 }
 
 int main(){
@@ -328,6 +391,13 @@ int main(){
     printpathlist(pathlist);
     setpathnamelist(pathlist, pathnamelist, allnodes);
     setpath_for_calc(pathlist, path ,allnodes, names);
-    path_strenght_calc(path, w);
+    vector <int> alt;
+    path_strenght_calc(path, w, alt);
+    printvecint(alt);
+    string sim_file = filecpy(filename);
+    
+    set_subckt(sim_file, alt, names, w);
+    
+    
     return 0;
 }
