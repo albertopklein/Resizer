@@ -32,6 +32,7 @@ int main(){
                     size_t pos = myfile.tellp();
                     cout << pos << endl;
                     cout << pos-15 << endl;
+                    cout << (aux.size()-r2+2) << endl;
                     myfile.seekp(pos-(aux.size()-r2+2));
                     
                     //cout << *temp << endl;
